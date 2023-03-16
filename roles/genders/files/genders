@@ -1,0 +1,4 @@
+sal-amperehn01  sms
+sal-amperecn01  compute,bmc=105.128.93.170
+sal-amperecn02  compute,bmc=105.128.93.171
+sal-amperecn03  compute,bmc=105.128.93.172

@@ -1,0 +1,32 @@
+---
+# Install genders
+#[sms]# yum -y install genders-ohpc
+
+- name: 3.8.4.10 Add genders (Install)
+  dnf:
+    name: genders-ohpc
+    state: latest
+
+# Generate a sample genders file
+#[sms]# echo -e "${sms_name}\tsms" > /etc/genders
+#[sms]# for ((i=0; i<$num_computes; i++)) ; do
+#echo -e "${c_name[$i]}\tcompute,bmc=${c_bmc[$i]}"
+#done >> /etc/genders
+
+- name: "3.8.4.10 Add ClusterShell (Generate a genders file)"
+  become: yes
+  copy
+    src: genders
+    dest: /etc/genders
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+
+
+
+
+
+
+
+

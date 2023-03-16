@@ -1,0 +1,75 @@
+---
+# ansible-playbook for Singularity Installation
+
+# - name: Download singularity dependencies
+#   become: yes
+#   dnf:
+#     name: '{{item}}'
+#     state: present
+#     update_cache: true
+#   with_items:
+#     - '@Development tools'
+#     - openssl-devel
+#     - libuuid-devel
+#     - libseccomp-devel
+#     - wget
+#     - squashfs-tools
+
+- name: Download singularity dependencies
+  become: yes
+  apt:
+    name: '{{item}}'
+    state: present
+    update_cache: true
+  with_items:
+    - build-essential
+    - libssl-dev
+    - uuid-dev
+    - libgpgme11-dev
+    - squashfs-tools
+    - libseccomp-dev
+    - pkg-config
+    - libglib2.0-dev
+
+- debug: msg="play_hosts={{play_hosts}}"
+   
+- debug: msg="install_root={{install_root}}"
+  
+#https://github.com/sylabs/singularity/releases/download/v3.11.1/singularity-ce-3.11.1.tar.gz
+
+- name: Download Singularity 
+  get_url:
+    url: "https://github.com/sylabs/singularity/releases/download/v{{singularity_version}}/singularity-ce-{{singularity_version}}.tar.gz"
+    dest: "{{install_root}}"
+    checksum: sha256:{{checksum}}
+
+- name: Extract Singularity tarball
+  unarchive:
+     src: "{{install_root}}/singularity-ce-{{singularity_version}}.tar.gz"
+     dest: "{{install_root}}"
+     copy: no
+  become: yes
+
+- name: Build Singularity 
+  shell: |
+    export PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin;
+    ./mconfig --prefix="{{install_dest}}"
+  args:
+    chdir: "{{install_root}}/singularity-ce-{{singularity_version}}"
+    creates: buildir
+
+- name: Make Singularity 
+  register: make_singularity
+  make:
+    chdir: "{{install_root}}/singularity-ce-{{singularity_version}}/builddir"
+- debug:
+    var: make_singularity.stdout_lines
+
+- name: Make install Singularity
+  register: make_install_singularity
+  make:
+    chdir: "{{install_root}}/singularity-ce-{{singularity_version}}/builddir"
+    target: install
+  become: yes
+- debug:
+    var: make_install_singularity.stdout_lines  

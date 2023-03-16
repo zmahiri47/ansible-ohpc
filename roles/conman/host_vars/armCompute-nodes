@@ -1,0 +1,3 @@
+headnode_name: sal-amperehn01
+compute_prefix: sal-amperecn
+num_computes: 4

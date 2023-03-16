@@ -1,0 +1,7 @@
+- name: 3.6.4.1 Enable ssh control via resource manager (Add line to /etc/pam.d/sshd)
+  become: yes
+  lineinfile:
+    path: /etc/pam.d/sshd
+    line: '"account required pam_slurm.so"'
+    state: present
+    backup: yes

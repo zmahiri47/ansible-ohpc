@@ -1,0 +1,11 @@
+---
+- name: Copy over ohpc local repo to /etc/yum.repos.d
+  become: yes
+  copy:
+    src: openhpc_local.repo
+    dest: /etc/yum.repos.d/openhpc_local.repo
+    owner: root
+    group: root
+    mode: '0644'
+    backup: yes
+

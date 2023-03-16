@@ -1,0 +1,48 @@
+---
+- name: 3.8.4.9 Add ClusterShell (Install clustershell)
+  dnf:
+    name: clustershell
+    state: latest
+
+- name: 3.8.4.9 Add ClusterShell (Backup original local.cfg)
+  copy:
+    src: /etc/clustershell/groups.d/local.cfg 
+    dest: /etc/clustershell/groups.d/local.cfg.orig
+
+- name: 3.8.4.9 Add ClusterShell (Update local.cfg -- add sms)
+  become: yes
+  lineinfile:
+    path: /etc/clustershell/groups.d/local.cfg
+    line: 'adm: {{sms_name}}'
+    state: present
+    backup: yes
+
+- name: 3.8.4.9 Add ClusterShell (Update local.cfg -- add compute nodes)
+  become: yes
+  lineinfile:
+    path: /etc/clustershell/groups.d/local.cfg
+    line: 'compute: {{compute_prefix}}[1-{{num_computes}}]'
+    state: present
+    backup: yes
+
+- name: 3.8.4.9 Add ClusterShell (Update local.cfg -- add groups)
+  become: yes
+  lineinfile:
+    path: /etc/clustershell/groups.d/local.cfg
+    line: 'all: @adm,@compute'
+    state: present
+    backup: yes
+
+#### 
+#- name: 3.8.4.9 Add ClusterShell (Setup node definitions)
+#- command: "{{ item }} chdir=/etc/clustershell/groups.d"
+#  with_items:
+#  - mv local.cfg local.cfg.orig
+#  - echo "adm: {{sms_name}}" > local.cfg
+#  - echo "compute: {{compute_prefix}}[1-{{num_computes}}]" >> local.cfg
+#  - echo "all: @adm,@compute" >> local.cfg
+
+
+
+
+

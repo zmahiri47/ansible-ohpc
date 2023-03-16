@@ -1,0 +1,8 @@
+---
+- name: 3.7.4 Optional kernel arguments (Update /etc/sysctl.conf )
+  become: yes
+  lineinfile:
+    path: /etc/sysctl.conf
+    line: 'user.max_user_namespaces=15076'
+    state: present
+    backup: yes

@@ -1,0 +1,57 @@
+---
+- name: Install chronyd
+  register: chronyd_install
+  package:
+    name: chrony
+    state: present
+- debug:
+    var: chronyd_install.stdout_lines
+
+- name: Enable a chronyd service
+  register: chronyd_svc_enable
+  service:
+    name: chronyd
+    state: started
+    enabled: true
+- debug:
+    var: chronyd_svc_enable.stdout_lines
+
+- name: Configure chronyd (Update chrony.conf -- add config)
+  become: yes
+  lineinfile:
+    path: /etc/chrony.conf
+    line: 'local stratum 10'
+    state: present
+    backup: yes
+
+- name: Configure chronyd (Update chrony.conf -- add ntp server)
+  become: yes
+  lineinfile:
+    path: /etc/chrony.conf
+    line: 'server {{ntp_server}}'
+    state: present
+    backup: yes
+
+- name: Configure chronyd (Update chrony.conf -- allow all sal hosts)
+  become: yes
+  lineinfile:
+    path: /etc/chrony.conf
+    line: 'allow all'
+    state: present
+    backup: yes
+
+- name: Restart chronyd service
+  register: chronyd_svc_restart
+  service:
+    name: chronyd
+    state: restarted
+    enabled: true
+- debug:
+    var: chronyd_svc_restart.stdout_lines
+
+
+#systemctl enable chronyd.service
+#[sms]# echo "local stratum 10" >> /etc/chrony.conf
+#[sms]# echo "server ${ntp_server}" >> /etc/chrony.conf
+#[sms]# echo "allow all" >> /etc/chrony.conf
+#[sms]# systemctl restart chronyd

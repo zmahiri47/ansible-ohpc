@@ -1,0 +1,13 @@
+---
+- name: Clone a github repository
+  git:
+    repo: https://github.com/freeipa/freeipa-container.git
+    #repo: git@github.com:freeipa/freeipa-container.git #ssh
+    dest: /tmp/freeipa-container
+    clone: yes
+    update: yes
+
+#  register: git_pull_output
+
+#- debug:
+#    var: git_pull_output.stdout_lines

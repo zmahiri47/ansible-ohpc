@@ -1,0 +1,78 @@
+---
+- name: Check if /root/ADMIN directory exists
+  become: yes
+  stat:
+    path: '/root/ADMIN'
+  register: admin_dir_exist
+
+- debug: var=admin_dir_exist.stat.path
+
+- name: Create /root/ADMIN directory if it doesn't already exist
+  become: yes
+  file:
+    path: '/root/ADMIN'
+    state: directory
+    mode: 0755
+    group: root
+    owner: root
+  when: not admin_dir_exist.stat.exists
+
+## Install luaposix
+
+- name: Install luaposix
+  become: yes
+  tags: luaposix_install
+  shell: luarocks install luaposix
+  register: luaposix_install
+
+- debug: 
+    var: luaposix_install.stdout_lines
+
+## Install luafilesystem 
+
+- name: Install luafilesystem
+  become: yes
+  tags: luafilesystem_install
+  shell: luarocks install luafilesystem
+  register: luafilesystem_install
+
+- debug: 
+    var: luafilesystem_install.stdout_lines
+
+## Install Lmod deps
+
+- name: Install Lmod dependency packages
+  become: yes
+  register: lmod_deps
+  apt:
+    update_cache: yes
+    name:
+      - tcl
+      - tcl-dev
+    state: present
+- debug:
+    var: lmod_deps.stdout_lines
+
+## Download Lmod
+
+- name: Download Lmod "{{lmod_vers}}"
+  become: yes
+  get_url:
+    url: https://github.com/TACC/Lmod/archive/refs/tags/{{lmod_vers}}.tar.gz
+    dest: /root/ADMIN/lmod-{{lmod_vers}}.tar.gz
+
+# Install Lmod
+
+- name: Install Lmod
+  become: yes
+  tags: lmod_install
+  shell: |
+     cd /root/ADMIN/
+     tar -zxvf lmod-{{lmod_vers}}.tar.gz
+     cd  /root/ADMIN/lmod-{{lmod_vers}}
+     ./configure --prefix=/opt/ohpc/admin/
+     make install
+  register: lmod_install
+
+- debug: 
+    var: lmod_install.stdout_lines

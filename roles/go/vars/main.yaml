@@ -1,0 +1,5 @@
+new_go_version: 1.19
+play_hosts:
+install_root: /root/ADMIN/
+file_owner: root
+home_dir: /root

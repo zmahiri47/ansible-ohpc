@@ -1,0 +1,8 @@
+- name: 3.6.4.8 Add NHC (Install nhc ohpc)
+  become: yes
+  register: nhc_install
+  dnf:
+    name: nhc-ohpc
+    state: latest
+- debug:
+    var: nhc_install.stdout_lines

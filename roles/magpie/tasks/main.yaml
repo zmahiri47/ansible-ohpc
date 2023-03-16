@@ -1,0 +1,4 @@
+- name: 3.6.4.6 Add Magpie (Install magpie ohpc)
+  dnf:
+    name: magpie-ohpc
+    state: latest

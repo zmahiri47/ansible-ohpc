@@ -1,0 +1,4 @@
+bin   -fstype=nfs,vers=3  <netapp_ipaddr>:/sal/bin
+data  -fstype=nfs,vers=3  <netapp_ipaddr>:/sal/data
+home  -fstype=nfs,vers=3  <netapp_ipaddr>:/sal/home
+opt   -fstype=nfs,vers=3  <netapp_ipaddr>:/sal/opt

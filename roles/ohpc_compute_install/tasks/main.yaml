@@ -1,0 +1,126 @@
+---
+- name: 3.6.2 Add OpenHPC components (Copy ohpc-gnu12-runtimes)
+  become: yes 
+  copy:
+     src: "{{ item }}"
+     dest: /root/ADMIN/
+     owner: root
+     group: root
+  with_items:
+    - charliecloud-ohpc-0.15-4.1.ohpc.2.0.aarch64.rpm
+    - singularity-ohpc-3.4.2-5.1.ohpc.2.0.aarch64.rpm
+
+- name: 3.6.2 Add OpenHPC components (Install ohpc-gnu12-runtimes)
+  dnf:
+     name: /root/ADMIN/"{{ item }}"
+     state: present
+  with_items:
+    - charliecloud-ohpc-0.15-4.1.ohpc.2.0.aarch64.rpm
+    - singularity-ohpc-3.4.2-5.1.ohpc.2.0.aarch64.rpm
+
+- name: 3.6.2 Add OpenHPC components (Install ohpc base compute)
+  register: ohpc_base_compute_install
+  become: yes
+  shell:
+    cmd: dnf install ohpc-base-compute --skip-broken -y
+- debug:
+    var: ohpc_base_compute_install.stdout_lines
+
+# - name: 3.6.2 Add OpenHPC components (Install ohpc base compute)
+#   register: ohpc_base_compute_install
+#   become: yes
+#   dnf:
+#     name: ohpc-base-compute
+#     state: latest
+#     skip_broken: yes
+# - debug:
+#     var: ohpc_base_compute_install.stdout_lines
+
+- name: 3.6.2 Add OpenHPC components (Install ohpc slurm client)
+  register: ohpc_slurm_client_install
+  become: yes
+  dnf:
+    name: ohpc-slurm-client
+    state: latest
+- debug:
+    var: ohpc_slurm_client_install.stdout_lines
+
+- name: 3.6.2 Add OpenHPC components (Enable munge service)
+  register: munge_svc_enable
+  become: yes
+  service:
+    name: munge
+    state: started
+    enabled: true
+- debug:
+    var: munge_svc_enable.stdout_lines
+
+- name: 3.6.2 Add OpenHPC components (Register Slurm server with computes)
+  become: yes
+  lineinfile:
+    path: /etc/chrony.conf
+    line: 'SLURMD_OPTIONS="--conf-server {{sms_ip}}"'
+    state: present
+    backup: yes
+
+- name: 3.6.2 Add OpenHPC components (Install chrony)
+  register: chrony_install
+  become: yes
+  dnf:
+    name: chrony
+    state: latest
+- debug:
+    var: chrony_install.stdout_lines
+
+- name: Configure chronyd (Update chrony.conf -- add ntp server)
+  become: yes
+  lineinfile:
+    path: /etc/chrony.conf
+    line: 'server {{sms_ip}} iburst'
+    state: present
+    backup: yes
+
+- name: 3.6.2 Add OpenHPC components (Install kernel-`uname -r`)
+  register: kernel_dev_install
+  become: yes
+  shell:
+    cmd: dnf install kernel-`uname -r` -y
+- debug:
+    var: kernel_dev_install.stdout_lines
+
+# - name: 3.6.2 Add OpenHPC components (Install kernel-`uname -r`)
+#   register: kernel_dev_install
+#   become: yes
+#   dnf:
+#     name: kernel-`uname -r`
+#     state: latest
+# - debug:
+#     var: kernel_dev_install.stdout_lines
+
+- name: 3.6.2 Add OpenHPC components (Install lmod ohpc)
+  register: lmod_install
+  become: yes
+  dnf:
+    name: lmod-ohpc
+    state: latest
+- debug:
+    var: lmod_install.stdout_lines
+
+# [sms]# echo "HealthCheckProgram=/usr/sbin/nhc" >> /etc/slurm/slurm.conf
+# [sms]# echo "HealthCheckInterval=300" >> /etc/slurm/slurm.conf # execute every five minutes
+
+# - name: 3.6.4.8 Add NHC (Add Node Health Check to slurm.conf -- add program)
+#   become: yes
+#   lineinfile:
+#     path: /etc/slurm/slurm.conf
+#     line: 'HealthCheckProgram=/usr/sbin/nhc'
+#     state: present
+#     backup: yes
+
+# - name: 3.6.4.8 Add NHC (Add Node Health Check to slurm.conf - add interval)
+#   become: yes
+#   lineinfile:
+#     path: /etc/slurm/slurm.conf
+#     line: 'HealthCheckInterval=300'
+#     state: present
+#     backup: yes

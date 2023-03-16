@@ -1,0 +1,11 @@
+- name: arm compute node set up
+  hosts: arm_compute
+  become: yes
+  roles:
+  - root_ADMIN
+  - firewalld_off
+  - ohpc_local_repo
+  - epel
+  - ohpc_components
+  - ssh_control_via_slurm
+  - kernal_args_cn

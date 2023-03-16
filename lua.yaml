@@ -1,0 +1,10 @@
+- name: Installing Lmod
+  hosts: kvm
+  become: no
+  roles:
+  - lua
+  - luarocks
+  - lmod
+
+
+                      

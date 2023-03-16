@@ -1,0 +1,15 @@
+---
+- name: Disable SELinux
+  selinux:
+    state: disabled
+  register: selinuxdisabled
+- name: Print the changes in Configurtion file 
+  command: grep SELINUX /etc/sysconfig/selinux
+  register: sevalue
+- debug:
+        var: sevalue.stdout_lines
+#- name: Wait for 5 Second and Reboot 
+#  shell: "sleep 5 && reboot"
+#  async: 1
+#  poll: 0
+#  when: selinuxdisabled is changed

@@ -1,0 +1,7 @@
+#play_hosts:
+install_root: /root/ADMIN/
+install_dest: /opt/singularity/
+home_dir: /root/
+file_owner: root
+singularity_version: "3.11.1"
+checksum: 93d1665b994ef17ae8ef3a0784ae94cade8435af0a3e4bad2efbac525938b457

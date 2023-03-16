@@ -1,0 +1,70 @@
+---
+# 3.8.4.11 Add ConMan 
+# ConMan is a serial console management program designed to support a 
+# large number of console devices and simultaneous users. It supports logging console 
+# device output and connecting to compute node consoles via IPMI serial-over-lan.
+
+## From source
+
+#https://github.com/dun/conman/archive/refs/tags/conman-0.3.0.tar.gz
+
+
+
+# Install conman to provide a front-end to compute consoles and log output
+#[sms]# yum -y install conman-ohpc
+# Configure conman for computes (note your IPMI password is required for console access)
+- name: 3.8.4.11 Add ConMan (Install conman-ohpc)
+  register: conman_ohpc_install
+  dnf:
+    name: conman-ohpc
+    state: latest
+- debug:
+    var: conman_ohpc_install.stdout_lines
+
+- name: Add mappings to /etc/conman.conf
+  blockinfile:
+    path: /etc/conman.conf
+    block: |
+      'CONSOLE name="sal-amperecn01" dev="ipmi:105.128.93.170}" ipmiopts="U:admin,P:samsung1234,W:solpayloadsize"'
+      'CONSOLE name="sal-amperecn02" dev="ipmi:105.128.93.171}" ipmiopts="U:admin,P:samsung1234,W:solpayloadsize"'
+      'CONSOLE name="sal-amperecn03" dev="ipmi:105.128.93.172}" ipmiopts="U:admin,P:samsung1234,W:solpayloadsize"'
+    backup: yes
+
+
+#[sms]# for ((i=0; i<$num_computes; i++)) ; do
+#echo -n 'CONSOLE name="'${c_name[$i]}'" dev="ipmi:'${c_bmc[$i]}'" '
+#echo 'ipmiopts="'U:${bmc_username},P:${IPMI_PASSWORD:-undefined},W:solpayloadsize'"'
+#done >> /etc/conman.conf
+
+#- name: 3.8.4.11 Add ConMan (Update conman.conf - add console name)
+#  become: yes
+#  lineinfile:
+#    path: /etc/conman.conf
+#    line: 'CONSOLE name="'${c_name[$i]}'" dev="ipmi:'${c_bmc[$i]}'" '
+#    state: present
+#    backup: yes
+
+#- name: 3.8.4.11 Add ConMan (Update conman.conf - add ipmi options)
+#  become: yes
+#  lineinfile:
+#    path: /etc/conman.conf
+#    line: 'ipmiopts="'U:${bmc_username},P:${IPMI_PASSWORD:-undefined},W:solpayloadsize'"'
+#    state: present
+#    backup: yes
+
+
+
+# Enable and start conman
+#[sms]# systemctl enable conman
+#[sms]# systemctl start conman
+
+- name: Enable and start conman
+  register: conman_svc_start
+  service: started
+    name: conman
+    state: started
+    enabled: true 
+
+# Note that an additional kernel boot option is typically necessary to enable serial console 
+# output. This option is highlighted in §3.9.4 after compute nodes have been registered 
+# with the provisioning system.

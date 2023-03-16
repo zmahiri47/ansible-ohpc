@@ -1,0 +1,34 @@
+---
+- name: Install autofs
+  register: autofs_deps
+  package:
+    name: autofs
+    state: present
+- debug:
+    var: autofs_deps.stdout_lines
+
+- name: Ensure autofs service is enabled and running
+  service:
+    name: autofs
+    state: started
+    enabled: yes
+
+- name: Add /etc/auto.master
+  copy: 
+    src: auto.master 
+    dest: /etc/auto.master
+    force: no
+
+- name: Add /etc/auto.sal
+  copy: 
+    src: auto.sal
+    dest: /etc/auto.sal
+    force: no
+
+- name: Restart autofs after files have been updated
+  ansible.builtin.service:
+    name: autofs
+    state: restarted
+
+
+
