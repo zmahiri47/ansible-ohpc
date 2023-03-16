@@ -25,9 +25,9 @@
   blockinfile:
     path: /etc/conman.conf
     block: |
-      'CONSOLE name="sal-amperecn01" dev="ipmi:105.128.93.170}" ipmiopts="U:admin,P:samsung1234,W:solpayloadsize"'
-      'CONSOLE name="sal-amperecn02" dev="ipmi:105.128.93.171}" ipmiopts="U:admin,P:samsung1234,W:solpayloadsize"'
-      'CONSOLE name="sal-amperecn03" dev="ipmi:105.128.93.172}" ipmiopts="U:admin,P:samsung1234,W:solpayloadsize"'
+      'CONSOLE name="<hostname>" dev="ipmi:<ip addr>}" ipmiopts="U:<login>,P:<pw>,W:solpayloadsize"'
+      'CONSOLE name="<hostname>" dev="ipmi:<ip addr>}" ipmiopts="U:<login>,P:<pw>,W:solpayloadsize"'
+      'CONSOLE name="<hostname>" dev="ipmi:<ip addr>}" ipmiopts="U:<login>,P:<pw>,W:solpayloadsize"'
     backup: yes
 
 
