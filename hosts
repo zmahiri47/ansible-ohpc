@@ -1,35 +1,33 @@
 [ldap_server]
-sal-freeipa01.ssi.samsung.com ansible_host=105.128.93.86
-sal-freeipa02.ssi.samsung.com ansible_host=105.128.93.86
+<hostname>
 
 [riscv_master]
-sal-riscvx86hn01.ssi.samsung.com ansible_host=105.128.93.74
+<hostname>
 
 [starfives]
-sal-starfive0[1:4].ssi.samsung.com 
+<hostname>
 
 [app_servers]
-sal-hyperplane01.ssi.samsung.com
+<hostname>
 
 [arm_compute]
-sal-amperecn0[1:3].ssi.samsung.com
-sal-amperecn04.ssi.samsung.com ansible_host=105.128.93.79
+<hostname>
 
 [arm_master]
-sal-amperehn01.ssi.samsung.com
+<hostname>
 
 [dev_servers]
-sal-dev0[1:4].ssi.samsung.com
+<hostname>
 
 [ubuntu_dev]
-sal-dev0[3:4].ssi.samsung.com
+<hostname>
 
 [rocky_dev]
-sal-dev0[1:2].ssi.samsung.com
+<hostname>
 
 [compute_nodes:children]
-starfives
 arm_compute
+
 
 [ubuntu:children]
 riscv_master
@@ -41,68 +39,13 @@ arm_master
 arm_compute
 
 [npl_baremtl_syssw]
-sal-nplkvs30.ssi.samsung.com
-sal-nplkvs31.ssi.samsung.com
-sal-nplkvs32.ssi.samsung.com
-sal-nplkvs33.ssi.samsung.com
-#sal-nplkvs34
-sal-nplkvs35.ssi.samsung.com
-sal-nplkvs36.ssi.samsung.com
-sal-nplkvs37.ssi.samsung.com
-sal-nplkvs38.ssi.samsung.com
-sal-nplsyssrv01.ssi.samsung.com
-sal-nplsyssrv02.ssi.samsung.com
-sal-nplsysdev50.ssi.samsung.com
-sal-nplsysdev51.ssi.samsung.com
-sal-nplsysdev52.ssi.samsung.com
-sal-nplsysdev53.ssi.samsung.com
-#sal-nplcl1dmn09.ssi.samsung.com
-sal-nplcl2dmn105.ssi.samsung.com
-sal-nplcl2dmn106.ssi.samsung.com
-sal-nplcl2dmn107.ssi.samsung.com
-sal-nplcl2dmn108.ssi.samsung.com
-sal-nplkvs115.ssi.samsung.com
-sal-nplkvs116.ssi.samsung.com
-#sal-nplkvs117.ssi.samsung.com
-sal-nplkvs118.ssi.samsung.com
-#sal-nplsdpcl1dmn01
-#sal-nplsdpcl1dmn02
-#sal-nplsdpcl1dmn03
-#sal-nplsdpcl1dmn04
-#sal-nplsdpcl1kvs01
-#sal-nplsdpcl1kvs02
-#sal-nplsdpcl1kvs03
-#sal-nplsdpcl1kvs04
+<hostname>
 
 [npl_baremtl_gpu]
-sal-nplpos-a1.ssi.samsung.com ansible_host=105.128.93.42
-#sal-nplpos-a0.ssi.samsung.com ansible_host=105.128.93.41
-sal-nplice58.ssi.samsung.com ansible_host=105.128.93.58
-sal-nplice57.ssi.samsung.com ansible_host=105.128.93.57
-sal-nplice56.ssi.samsung.com ansible_host=105.128.93.56
-sal-nplice55.ssi.samsung.com ansible_host=105.128.93.55
-sal-nplice07.ssi.samsung.com ansible_host=105.128.93.7
-sal-nplepyc05.ssi.samsung.com ansible_host=105.128.93.5
-sal-nplnpl02.ssi.samsung.com ansible_host=105.128.93.2
-sal-nplice06.ssi.samsung.com ansible_host=105.128.93.6
-#sal-nplsdgx.ssi.samsung.com ansible_host=105.128.93.1 
-sal-nplnpl04.ssi.samsung.com ansible_host=105.128.93.4
+<hostname>
 
 [npl_vms]
-sal-nplsysvm01 ansible_host=105.128.93.80
-sal-nplsysvm81 ansible_host=105.128.93.81
-sal-nplsysvm82 ansible_host=105.128.93.82
-sal-nplsysvm83 ansible_host=105.128.93.83
-sal-nplsysvm28 ansible_host=105.128.93.28
-sal-nplsysvm29 ansible_host=105.128.93.29
-sal-nplsysvm25 ansible_host=105.128.93.25
-sal-nplsysvm39 ansible_host=105.128.93.39
-sal-nplsysvm40 ansible_host=105.128.93.40
-sal-nplsysvm43 ansible_host=105.128.93.43
-sal-nplsysvm44 ansible_host=105.128.93.44
-sal-nplsysvm46 ansible_host=105.128.93.46
-sal-nplsysvm27 ansible_host=105.128.93.27
-sal-nplsysvm26 ansible_host=105.128.93.26
+<hostname>
 
 [npl_all:children]
 npl_vms
