@@ -1,11 +1,11 @@
 [OpenHPC-aarch64-local]
 name=OpenHPC-2 aarch64 - Base
-baseurl=http://sal-nplsyssrv01.ssi.samsung.com/wwwfiles/openhpc/aarch64/EL_8
+baseurl=http://<web server hosts></path/to/repo>/EL_8
 gpgcheck=1
-gpgkey=http://sal-nplsyssrv01.ssi.samsung.com/wwwfiles/openhpc/aarch64/EL_8/repodata/repomd.xml.key
+gpgkey=http://<web server hosts></path/to/repo>/EL_8/repodata/repomd.xml.key
 
 [OpenHPC-aarch64-local-updates]
 name=OpenHPC-2.6 aarch64 - Updates
-baseurl=http://sal-nplsyssrv01.ssi.samsung.com/wwwfiles/openhpc/aarch64/EL_8/updates
+baseurl=http://<web server hosts></path/to/repo>/EL_8/updates
 gpgcheck=1
-gpgkey=http://sal-nplsyssrv01.ssi.samsung.com/wwwfiles/openhpc/aarch64/EL_8/repodata/repomd.xml.key
+gpgkey=http://<web server hosts></path/to/repo>/EL_8/repodata/repomd.xml.key
